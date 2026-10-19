@@ -5,26 +5,43 @@ if (isNaN(size) || size < 3 || size > 10) {
   throw new Error("Invalid grid size");
 }
 
-
+let moves = 0;
 
 const bodyka = document.body;
 bodyka.style.display = "flex";
 bodyka.style.justifyContent = "center";
 bodyka.style.alignItems = "center";
+bodyka.style.flexDirection = "column";
 bodyka.style.height = "90vh";
 bodyka.style.backgroundColor = "#713196";
+
 const div1 = document.createElement("div");
 div1.style.display = "grid";
 div1.style.gridTemplateColumns = `repeat(${size}, 50px)`;
 div1.style.gridTemplateRows = `repeat(${size}, 50px)`;
 div1.style.gap = "5px";
 div1.style.border = "2px solid black";
-div1.style.backgroundColor = "rgb(199, 199, 199)";
+div1.style.backgroundColor = "rgb(198, 182, 206)";
 div1.style.width = `${size * 55}px`;
+div1.style.height = `${size * 55}px`;
+div1.style.boxShadow = "0 0 7px rgba(0, 0, 0, 0.5)";
+div1.style.borderRadius = "10px";
+div1.style.paddingTop = "6px";
+div1.style.paddingLeft = "6px";
+div1.style.paddingRight = "2px";
+div1.style.paddingBottom = "2px";
 bodyka.appendChild(div1);
 
+const movesDisplay = document.createElement("div");
+movesDisplay.style.marginTop = "20px";
+movesDisplay.style.fontSize = "30px";
+movesDisplay.style.color = "white";
+movesDisplay.style.fontFamily = "Geo, sans-serif";
+movesDisplay.textContent = `Moves: ${moves}`;
+bodyka.appendChild(movesDisplay);
+
 // Start with every cell having the same color
-const grid = Array.from({ length: size }, () =>
+const grid = Array.from({ length: size }, () => // linq, tudod d mint denes
   Array(size).fill(0)
 );
 
@@ -41,13 +58,12 @@ for (let i = 0; i < size; i++) {
     cell.style.display = "flex";
     cell.style.justifyContent = "center";
     cell.style.alignItems = "center";
-    cell.style.backgroundColor = colors[grid[i][j]];
     cell.style.border = "1px solid black";
-    cell.dataset.row = i;
-    cell.dataset.col = j;
     cell.addEventListener("click", () => {
       flipCell(i, j);
+      moves++;
       updateGrid();
+      movesDisplay.textContent = `Moves: ${moves}`;
     });
     div1.appendChild(cell);
   }
@@ -107,7 +123,7 @@ function checkWin() {
   );
 
   if (won) {
-    alert("Congratulations! You've won the game!");
+    alert(`Congratulations! You've won the game in ${moves} moves!`);
   }
 }
 
